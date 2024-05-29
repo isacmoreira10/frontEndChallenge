@@ -2,11 +2,12 @@ import { styled } from "styled-components";
 
 export const CountContainer = styled.button`
   display: inline-flex;
-  position: absolute;
+  position: fixed;
   right: 0;
   margin-top: 1rem;
   gap: 0.5rem;
   border-radius: 0.5rem;
+  border: none;
   padding: 0.5rem;
   margin-right: 0.5rem;
   color: black;
@@ -19,8 +20,24 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  margin-left: 3rem;
+
   text-align: center;
+
+  @media (min-width: 900px) {
+    margin-left: 24rem;
+  }
+
+  @media (min-width: 1100px) {
+    margin-left: 30rem;
+  }
+
+  @media (min-width: 1300px) {
+    margin-left: 40rem;
+  }
+
+  @media (max-width: 800px) {
+    margin-left: 4rem;
+  }
 `;
 
 export const ContainerTitleButton = styled.div`
@@ -35,6 +52,8 @@ export const ContainerProducts = styled.div`
   flex-direction: column;
   gap: 1rem;
   padding: 1rem;
+  max-height: 75vh;
+  overflow-y: scroll;
 `;
 
 export const Title = styled.span`
@@ -94,7 +113,7 @@ export const Count = styled.div`
 
 export const Number = styled.span``;
 
-export const Minus = styled.button`
+export const Minus = styled.span`
   border-right: 1px solid;
   border-color: rgba(191, 191, 191, 1);
   padding-left: 0.2rem;
@@ -103,7 +122,7 @@ export const Minus = styled.button`
   height: 100%;
 `;
 
-export const Plus = styled.button`
+export const Plus = styled.span`
   border-left: 1px solid;
   border-color: rgba(191, 191, 191, 1);
   padding-left: 0.2rem;

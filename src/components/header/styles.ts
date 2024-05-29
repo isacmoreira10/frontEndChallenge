@@ -1,10 +1,11 @@
 import styled from "styled-components";
 
-export const HeaderContainer = styled.div`
+export const HeaderContainer = styled.header`
   display: flex;
   align-items: center;
   flex-direction: row;
   justify-content: space-between;
+  width: 100%;
   padding-left: 1rem;
   padding-right: 1rem;
   padding-top: 1rem;

@@ -1,11 +1,12 @@
 import Image from "next/image";
 
-import { Products } from "../../pages/";
+import { Products } from "../../pages";
 import {
   Button,
   CardContainer,
   ContainerDescription,
   Description,
+  ImageContainer,
   Name,
   NamePrice,
   Price,
@@ -14,22 +15,29 @@ import { useState } from "react";
 
 interface CardProps {
   product: Products;
+  onSelectedProducts: (product: Products) => void;
 }
 
-export function Card({ product }: CardProps) {
-  const [products, setProducts] = useState<Products>();
-  console.log(products);
+export function Card({ product, onSelectedProducts }: CardProps) {
   return (
     <CardContainer>
       <ContainerDescription>
-        <Image src={product.photo} width={127} height={158} alt="apple-watch" />
+        <ImageContainer>
+          <Image
+            src={product.photo}
+            width={127}
+            height={158}
+            alt="apple-watch"
+            className="ImageProduct"
+          />
+        </ImageContainer>
         <NamePrice>
           <Name>{product.name}</Name>
           <Price>R$ {product.price}</Price>
         </NamePrice>
         <Description>{product.description}</Description>
       </ContainerDescription>
-      <Button onClick={() => setProducts(product)}>
+      <Button onClick={() => onSelectedProducts(product)}>
         <Image
           src="/shopping-bag.svg"
           width={20}

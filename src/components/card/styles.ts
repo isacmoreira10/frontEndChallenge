@@ -11,6 +11,18 @@ export const CardContainer = styled.div`
   width: 260px;
 `;
 
+export const ImageContainer = styled.div`
+  position: unset !important;
+  width: 100%;
+`;
+
+export const ImageProduct = styled.image`
+  object-fit: contain;
+  width: 100% !important;
+  position: relative !important;
+  height: unset !important;
+`;
+
 export const NamePrice = styled.div`
   display: flex;
   align-items: center;

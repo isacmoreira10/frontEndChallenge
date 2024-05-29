@@ -1,6 +1,11 @@
-import { AnimatePresence, motion } from "framer-motion";
-import Image from "next/image";
 import { useState } from "react";
+import Image from "next/image";
+import { AnimatePresence, motion } from "framer-motion";
+
+import { SelectedProducts } from "@/pages";
+
+import { currency } from "@/ultils/currency";
+
 import {
   Close,
   Container,
@@ -29,21 +34,15 @@ const modalVariants = {
   closed: { opacity: 0, x: "-100%" },
 };
 
-export function Modal() {
-  const [isOpen, setIsOPen] = useState(false);
+interface ModalProps {
+  isOpen: boolean;
+  products: SelectedProducts[];
+  onClose: () => void;
+}
+
+export function Modal({ isOpen, products, onClose }: ModalProps) {
   return (
     <div>
-      {!isOpen && (
-        <CountContainer onClick={() => setIsOPen(true)}>
-          <Image
-            src="Vector.svg"
-            width={15}
-            height={15}
-            alt="shopping bag"
-          ></Image>
-          <span>0</span>
-        </CountContainer>
-      )}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -51,55 +50,47 @@ export function Modal() {
             animate="open"
             exit="closed"
             variants={modalVariants}
+            style={{
+              position: "fixed",
+              bottom: 0,
+              top: 0,
+              left: 0,
+              right: 0,
+            }}
           >
             <Container>
               <ProductContainer>
                 <ContainerTitleButton>
                   <Title>Carrinho de compras</Title>
-                  <Close onClick={() => setIsOPen(false)}>X</Close>
+                  <Close onClick={onClose}>X</Close>
                 </ContainerTitleButton>
                 <ContainerProducts>
-                  <Product>
-                    <Image
-                      src="apple-watch.svg"
-                      width={80}
-                      height={95}
-                      alt="apple-watch"
-                    />
-                    <Name></Name>
-                    <Quantify>
-                      <Count>
-                        <Minus>-</Minus>
-                        <Number>1</Number>
-                        <Plus>+</Plus>
-                      </Count>
-                      <Value>R$ 399</Value>
-                    </Quantify>
-                  </Product>
-                  <Product>
-                    <Image
-                      src="apple-watch.svg"
-                      width={80}
-                      height={95}
-                      alt="apple-watch"
-                    />
-                    <Name>Apple Watch Series</Name>
-                    <Quantify>
-                      <Count>
-                        <Minus>-</Minus>
-                        <Number>1</Number>
-                        <Plus>+</Plus>
-                      </Count>
-                      <Value>R$399</Value>
-                    </Quantify>
-                  </Product>
+                  {products.map((product) => (
+                    <Product key={product.id}>
+                      <Image
+                        src={product.photo}
+                        width={80}
+                        height={95}
+                        alt={product.name}
+                      />
+                      <Name>{product.name}</Name>
+                      <Quantify>
+                        <Count>
+                          <Minus>-</Minus>
+                          <Number>{product.quantity}</Number>
+                          <Plus>+</Plus>
+                        </Count>
+                        <Value>{currency(+product.price)}</Value>
+                      </Quantify>
+                    </Product>
+                  ))}
                 </ContainerProducts>
               </ProductContainer>
               <ValueContainer>
                 <TotalValueContainer>
                   <Total>Total</Total> <TotalValue>R$798</TotalValue>
                 </TotalValueContainer>
-                <Finalize>FInalizar compra</Finalize>
+                <Finalize>Finalizar compra</Finalize>
               </ValueContainer>
             </Container>
           </motion.div>

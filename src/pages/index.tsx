@@ -1,3 +1,5 @@
+import React from "react";
+
 import { GetServerSideProps } from "next";
 import Head from "next/head";
 
@@ -5,7 +7,6 @@ import { ProductsWrapper } from "@/components/products-wrapper";
 import { Header } from "@/components/header";
 import { Container } from "./styles";
 import { Footer } from "@/components/footer/intex";
-import { Modal } from "@/components/modal";
 
 export interface Products {
   brand: string;
@@ -18,7 +19,46 @@ export interface Products {
   updatedAt: string;
 }
 
+export interface SelectedProducts extends Products {
+  quantity: number;
+}
+
 export default function Home(props: { products: Products[] }) {
+  const [products, setProducts] = React.useState<Products[]>([]);
+  const [selectedProducts, setSelectedProducts] = React.useState<
+    SelectedProducts[]
+  >([]);
+
+  function handleSelectedProducts(product: Products) {
+    let newSelectedProducts = selectedProducts;
+    const exitProdut =
+      selectedProducts.filter(
+        (selectedProduct) => selectedProduct.id === product.id
+      ).length > 0;
+
+    if (exitProdut) {
+      for (let i = 0; i < selectedProducts.length; i++) {
+        if (selectedProducts[i].id === product.id) {
+          newSelectedProducts[i] = {
+            ...selectedProducts[i],
+            quantity: selectedProducts[i].quantity + 1,
+          };
+        }
+      }
+
+      setSelectedProducts(newSelectedProducts);
+      return;
+    }
+
+    setSelectedProducts((oldValue) => [
+      ...oldValue,
+      {
+        ...product,
+        quantity: 1,
+      },
+    ]);
+  }
+
   return (
     <>
       <Head>
@@ -27,13 +67,18 @@ export default function Home(props: { products: Products[] }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Modal />
-      <Header />
-      <Container>
-        <ProductsWrapper products={props.products} />
-      </Container>
-
-      <Footer />
+      <Header products={selectedProducts} />
+      <main>
+        <Container>
+          <ProductsWrapper
+            products={props.products}
+            onSelectedProdut={(product) => handleSelectedProducts(product)}
+          />
+        </Container>
+      </main>
+      <footer>
+        <Footer />
+      </footer>
     </>
   );
 }
